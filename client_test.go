@@ -1,21 +1,10 @@
 package easyhttp
 
 import (
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
-
-type errReader struct{}
-
-func (errReader) Read(p []byte) (n int, err error) {
-	return 0, errors.New("read error")
-}
-
-func (errReader) Close() error {
-	return nil
-}
 
 func TestClient_EasyGet(t *testing.T) {
 
