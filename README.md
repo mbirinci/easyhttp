@@ -1,5 +1,7 @@
 # easyhttp
 
+[![codecov](https://codecov.io/gh/mbirinci/easyhttp/branch/master/graph/badge.svg?token=WGSYR5V8ZH)](https://codecov.io/gh/mbirinci/easyhttp)
+
 An extended easily mockable native like http client
 
 # Basic Usage
