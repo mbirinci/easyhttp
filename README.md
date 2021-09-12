@@ -1,8 +1,8 @@
 # easyhttp
 
-An extended easily mockable http client
+An extended easily mockable native like http client
 
-#Basic Usage
+# Basic Usage
 
 ```go
 package main
