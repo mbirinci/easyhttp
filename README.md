@@ -1,6 +1,7 @@
 # easyhttp
 
 [![codecov](https://codecov.io/gh/mbirinci/easyhttp/branch/master/graph/badge.svg?token=WGSYR5V8ZH)](https://codecov.io/gh/mbirinci/easyhttp)
+[![Build Status](https://github.com/mbirinci/easyhttp/workflows/Test%20and%20Coverage/badge.svg?branch=master)](https://github.com/mbirinci/easyhttp/actions?query=branch%3Amaster)
 
 An extended easily mockable native like http client
 
