@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-type errReader struct {}
+type errReader struct{}
 
 func (errReader) Read(p []byte) (n int, err error) {
 	return 0, errors.New("read error")
@@ -36,7 +36,7 @@ func TestClient_EasyGet(t *testing.T) {
 	res, err := client.EasyGet(s.URL)
 
 	if err != nil {
-		t.Fatalf("err: %v",err)
+		t.Fatalf("err: %v", err)
 	}
 
 	if res == nil {
@@ -85,7 +85,6 @@ func TestClient_EasyGet_Fail(t *testing.T) {
 		t.Fatalf("response should nil")
 	}
 
-
 }
 
 func TestResponse_JSON(t *testing.T) {
@@ -110,7 +109,7 @@ func TestResponse_JSON(t *testing.T) {
 		t.Fatalf("err: %v", err)
 	}
 
-	var body struct {Foo string}
+	var body struct{ Foo string }
 
 	err = res.JSON(&body)
 
@@ -138,7 +137,7 @@ func TestResponse_JSON_Fail(t *testing.T) {
 		t.Fatalf("err: %v", err)
 	}
 
-	var body struct {Foo string}
+	var body struct{ Foo string }
 
 	err = res.JSON(&body)
 
@@ -146,7 +145,7 @@ func TestResponse_JSON_Fail(t *testing.T) {
 		t.Fatalf("should return error")
 	}
 
-	if body != struct {Foo string} { Foo: ""} {
+	if body != struct{ Foo string }{Foo: ""} {
 		t.Fatalf("body should have default value")
 	}
 

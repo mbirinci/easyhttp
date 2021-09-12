@@ -15,7 +15,7 @@ type Response struct {
 	RawBody []byte
 }
 
-func(c *Client) EasyGet(url string) (*Response, error) {
+func (c *Client) EasyGet(url string) (*Response, error) {
 
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 
@@ -42,7 +42,6 @@ func(c *Client) EasyGet(url string) (*Response, error) {
 		body,
 	}, nil
 }
-
 
 func (r *Response) JSON(val interface{}) error {
 
