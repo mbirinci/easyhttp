@@ -1,3 +1,3 @@
-module "github.com/mbirinci/easyhttp"
+module github.com/mbirinci/easyhttp
 
 go 1.17
