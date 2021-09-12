@@ -5,7 +5,7 @@
 
 An extended easily mockable native like http client
 
-# Basic Usage
+### Basic Usage
 
 ```go
 package main
@@ -14,21 +14,22 @@ import "github.com/mbirinci/easyhttp"
 
 func main() {
 	
-	client := easyhttp.Client{ // you can use it like stdlib *http.Client
-		&http.Client{}
+	client := easyhttp.Client{
+		&http.Client{} // pass your underlying stdlib *http.Client
 	}
 	
-	resp, err := client.EasyGet("http://domain.tld/path")
+	resp, err := client.EasyGet("http://foo.bar/path")
 	
 	if err != nil {
 		panic(err)
 	}
 	
-	var body struct{Foo string} {Foo: "foo"}
+	var data struct{Foo string} {Foo: "bar"}
 	
-	res.JSON(&body)
+	resp.JSON(&data)
 	
-	fmt.Println("%v", body)
+	// use the data
+	fmt.Println("%v", data)
 }
 
 ``` 
@@ -39,11 +40,11 @@ func main() {
 package application
 
 type HttpClient interface {
-	Get(url string) (*easyhttp.Response, error)
+	EasyGet(url string) (*easyhttp.Response, error)
 }
 
 type Application struct{
-	client HttpClient
+	httpClient HttpClient
 }
 
 func NewApp(c HttpClient) *Application {
@@ -51,12 +52,12 @@ func NewApp(c HttpClient) *Application {
 }
 
 type Foo struct{
-	Boo string
+	Bar string
 }
 
-func (a *Application) Run() Foo {
+func (app *Application) Run() Foo {
 	
-	res, err := a.client.Get("http://app.server/path")
+	resp, err := app.httpClient.EasyGet("http://foo.bar/path")
 	
 	if err != nil {
 		panic(err)
@@ -64,7 +65,7 @@ func (a *Application) Run() Foo {
 	
 	var foo Foo
 	
-	err = res.JSON(&foo)
+	err = resp.JSON(&foo)
 	
 	if err != nil {
     		panic(err)
@@ -80,18 +81,20 @@ package application_test
 
 type mockHttpClient struct{}
 
-func (*mockHttpClient) Get(url string) (*easyhttp.Response, error) {
-	return &easyhttp.Response{RawBody: []byte(`"boo": "boo"`)}, nil
+func (*mockHttpClient) EasyGet(url string) (*easyhttp.Response, error) {
+	
+	return &easyhttp.Response{RawBody: []byte(`"bar": "bar"`)}, nil
+	
 }
 
 func TestApp(t *testing.T) {
 	
 	app := Application{HttpClient: mockHttpClient}
 	
-	f := app.Run()
+	foo := app.Run()
 	
-	if f.Boo != "boo" {
-		t.Fatalf("expected boo, but got %s", f.Boo)
+	if foo.Bar != "bar" {
+		t.Fatalf("expected bar, but got %s", foo.Bar)
 	}
 	
 }
