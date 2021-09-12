@@ -14,7 +14,7 @@ import "github.com/mbirinci/easyhttp"
 
 func main() {
 	
-	client := easyhttp.Client{
+	client := easyhttp.Client {
 		&http.Client{} // pass your underlying stdlib *http.Client
 	}
 	
@@ -24,7 +24,7 @@ func main() {
 		panic(err)
 	}
 	
-	var data struct{Foo string} {Foo: "bar"}
+	var data struct{ Foo string }{ Foo: "bar" }
 	
 	resp.JSON(&data)
 	
@@ -43,19 +43,19 @@ type HttpClient interface {
 	EasyGet(url string) (*easyhttp.Response, error)
 }
 
-type Application struct{
+type Application struct {
 	httpClient HttpClient
 }
 
 func NewApp(c HttpClient) *Application {
-	return Application{c}
+	return Application{ c }
 }
 
 type Foo struct{
 	Bar string
 }
 
-func (app *Application) Run() Foo {
+func (app *Application) GetFoo() Foo {
 	
 	resp, err := app.httpClient.EasyGet("http://foo.bar/path")
 	
@@ -68,7 +68,7 @@ func (app *Application) Run() Foo {
 	err = resp.JSON(&foo)
 	
 	if err != nil {
-    		panic(err)
+	    panic(err)
     }
 	
 	return foo
@@ -91,7 +91,7 @@ func TestApp(t *testing.T) {
 	
 	app := Application{HttpClient: mockHttpClient}
 	
-	foo := app.Run()
+	foo := app.GetFoo()
 	
 	if foo.Bar != "bar" {
 		t.Fatalf("expected bar, but got %s", foo.Bar)
