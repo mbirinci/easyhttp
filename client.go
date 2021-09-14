@@ -20,18 +20,28 @@ type Response struct {
 	RawBody []byte
 }
 
+type Options struct {
+	Header map[string]string
+}
+
 
 // EasyGet make request and read body stream
 // It returns extended Response that acts as *http.Response
-func (c *Client) EasyGet(url string) (*Response, error) {
+func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 
-	request, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.Do(request)
+	if opts != nil {
+		for k, v := range opts.Header {
+			req.Header.Add(k, v)
+		}
+	}
+
+	resp, err := c.Do(req)
 
 	if err != nil {
 		return nil, err
