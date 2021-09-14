@@ -4,7 +4,7 @@
 [![Build Status](https://github.com/mbirinci/easyhttp/workflows/Test%20and%20Coverage/badge.svg?branch=master)](https://github.com/mbirinci/easyhttp/actions?query=branch%3Amaster)
 [![GoDoc](https://pkg.go.dev/badge/github.com/mbirinci/easyhttp?status.svg)](https://pkg.go.dev/github.com/mbirinci/easyhttp?tab=doc)
 
-An extended easily mockable native like http client
+An extended easily mockable native compatible http client
 
 ### Basic Usage
 
@@ -19,13 +19,17 @@ func main() {
 		&http.Client{} // pass your underlying stdlib *http.Client
 	}
 	
-	resp, err := client.EasyGet("http://foo.bar/path")
+	resp, err := client.EasyGet("http://foo.bar/", &easyhttp.Options{
+		map[string]string{
+			"If-Not-Now": "When",
+		},
+	})
 	
 	if err != nil {
 		panic(err)
 	}
 	
-	var data struct{ Foo string }{ Foo: "bar" }
+	var data struct{ Foo string }
 	
 	resp.JSON(&data)
 	
@@ -41,7 +45,7 @@ func main() {
 package application
 
 type HttpClient interface {
-	EasyGet(url string) (*easyhttp.Response, error)
+	EasyGet(url string, opts *easyhttp.Options) (*easyhttp.Response, error)
 }
 
 type Application struct {
@@ -58,7 +62,7 @@ type Foo struct{
 
 func (app *Application) GetFoo() Foo {
 	
-	resp, err := app.httpClient.EasyGet("http://foo.bar/path")
+	resp, err := app.httpClient.EasyGet("http://foo.bar", &easyhttp.Options{})
 	
 	if err != nil {
 		panic(err)
@@ -84,7 +88,7 @@ type mockHttpClient struct{}
 
 func (*mockHttpClient) EasyGet(url string) (*easyhttp.Response, error) {
 	
-	return &easyhttp.Response{RawBody: []byte(`"bar": "bar"`)}, nil
+	return &easyhttp.Response{RawBody: []byte(`{"bar": "bar"}`)}, nil
 	
 }
 

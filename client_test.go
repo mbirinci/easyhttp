@@ -22,7 +22,7 @@ func TestClient_EasyGet(t *testing.T) {
 
 	client := &Client{&http.Client{}}
 
-	res, err := client.EasyGet(s.URL)
+	res, err := client.EasyGet(s.URL, &Options{map[string]string{ "foo": "bar"}})
 
 	if err != nil {
 		t.Fatalf("err: %v", err)
@@ -38,7 +38,7 @@ func TestClient_EasyGet_Fail(t *testing.T) {
 
 	client := &Client{&http.Client{}} // use as stdlib *http.Client
 
-	res, err := client.EasyGet("://foo")
+	res, err := client.EasyGet("://foo", nil)
 
 	if err == nil {
 		t.Fatalf("should return error")
@@ -48,7 +48,7 @@ func TestClient_EasyGet_Fail(t *testing.T) {
 		t.Fatalf("response should nil")
 	}
 
-	res, err = client.EasyGet("http://notfound.server/")
+	res, err = client.EasyGet("http://notfound.server/", nil)
 
 	if err == nil {
 		t.Fatalf("should return error")
@@ -64,7 +64,7 @@ func TestClient_EasyGet_Fail(t *testing.T) {
 
 	defer s.Close()
 
-	res, err = client.EasyGet(s.URL)
+	res, err = client.EasyGet(s.URL, nil)
 
 	if err == nil {
 		t.Fatalf("should return error")
@@ -92,7 +92,7 @@ func TestResponse_JSON(t *testing.T) {
 
 	client := &Client{&http.Client{}}
 
-	res, err := client.EasyGet(s.URL)
+	res, err := client.EasyGet(s.URL, nil)
 
 	if err != nil {
 		t.Fatalf("err: %v", err)
@@ -120,7 +120,7 @@ func TestResponse_JSON_Fail(t *testing.T) {
 
 	client := &Client{&http.Client{}}
 
-	res, err := client.EasyGet(s.URL)
+	res, err := client.EasyGet(s.URL, nil)
 
 	if err != nil {
 		t.Fatalf("err: %v", err)
