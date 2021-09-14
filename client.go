@@ -20,7 +20,9 @@ type Response struct {
 	RawBody []byte
 }
 
+// Options are the options available to a request
 type Options struct {
+	// Header contains the request header fields
 	Header map[string]string
 }
 
@@ -69,5 +71,12 @@ func (r *Response) JSON(val interface{}) error {
 	}
 
 	return nil
+
+}
+
+// Text returns response body as string
+func (r *Response) Text() string {
+
+	return string(r.RawBody)
 
 }

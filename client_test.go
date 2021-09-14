@@ -139,3 +139,31 @@ func TestResponse_JSON_Fail(t *testing.T) {
 	}
 
 }
+
+func TestResponse_Text(t *testing.T) {
+
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		_, err := w.Write([]byte(`{"foo":"foo"}`))
+
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+
+	}))
+
+	defer s.Close()
+
+	client := &Client{&http.Client{}}
+
+	res, err := client.EasyGet(s.URL, nil)
+
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
+	if res.Text() != `{"foo":"foo"}` {
+		t.Fatalf("err: %v", err)
+	}
+
+}
