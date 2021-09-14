@@ -20,7 +20,7 @@ func main() {
 	}
 	
 	resp, err := client.EasyGet("http://foo.bar/", &easyhttp.Options{
-		map[string]string{
+		Header: map[string]string{
 			"If-Not-Now": "When",
 		},
 	})
@@ -86,7 +86,7 @@ package application_test
 
 type mockHttpClient struct{}
 
-func (*mockHttpClient) EasyGet(url string) (*easyhttp.Response, error) {
+func (*mockHttpClient) EasyGet(url string, opts *easyhttp.Options) (*easyhttp.Response, error) {
 	
 	return &easyhttp.Response{RawBody: []byte(`{"bar": "bar"}`)}, nil
 	
