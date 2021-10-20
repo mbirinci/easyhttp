@@ -63,6 +63,32 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 	}, nil
 }
 
+
+// EasyHead make request returns response
+// It returns extended Response that acts as *http.Response
+func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
+
+	req, err := http.NewRequest(http.MethodHead, url, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if opts != nil {
+		for k, v := range opts.Header {
+			req.Header.Add(k, v)
+		}
+	}
+
+	resp, err := c.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // JSON converts response body to passed value
 func (r *Response) JSON(val interface{}) error {
 
