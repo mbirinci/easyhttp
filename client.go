@@ -64,8 +64,8 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 }
 
 
-// EasyHead make request returns response
-// It returns extended Response that acts as *http.Response
+// EasyHead make request and returns response
+// It returns original request's response
 func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
 
 	req, err := http.NewRequest(http.MethodHead, url, nil)
