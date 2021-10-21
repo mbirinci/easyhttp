@@ -197,6 +197,7 @@ func TestClient_EasyHead(t *testing.T) {
 
 }
 
+
 func TestClient_EasyHead_Fail(t *testing.T) {
 
 	client := &Client{&http.Client{}} // use as stdlib *http.Client

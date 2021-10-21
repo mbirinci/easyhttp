@@ -64,7 +64,7 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 }
 
 
-// EasyHead make head request
+// EasyHead makes head request
 // It accept header values as Options and returns extended Response that acts as *http.Response
 func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
 
