@@ -167,3 +167,60 @@ func TestResponse_Text(t *testing.T) {
 	}
 
 }
+
+
+func TestClient_EasyHead(t *testing.T) {
+
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		_, err := w.Write([]byte(`{"foo": "foo"}`))
+
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+
+	}))
+
+	defer s.Close()
+
+	client := &Client{&http.Client{}}
+
+	res, err := client.EasyHead(s.URL, &Options{map[string]string{ "foo": "bar"}})
+
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
+	if res == nil {
+		t.Fatalf("response should not nil")
+	}
+
+}
+
+
+func TestClient_EasyHead_Fail(t *testing.T) {
+
+	client := &Client{&http.Client{}} // use as stdlib *http.Client
+
+	res, err := client.EasyHead("://foo", nil)
+
+	if err == nil {
+		t.Fatalf("should return error")
+	}
+
+	if res != nil {
+		t.Fatalf("response should nil")
+	}
+
+	res, err = client.EasyHead("http://notfound.server/", nil)
+
+	if err == nil {
+		t.Fatalf("should return error")
+	}
+
+	if res != nil {
+		t.Fatalf("response should nil")
+	}
+
+}
+
