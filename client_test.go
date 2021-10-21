@@ -221,10 +221,4 @@ func TestClient_EasyHead_Fail(t *testing.T) {
 		t.Fatalf("response should nil")
 	}
 
-	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Length", "1")
-	}))
-
-	defer s.Close()
-
 }

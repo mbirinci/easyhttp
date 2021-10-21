@@ -27,8 +27,8 @@ type Options struct {
 }
 
 
-// EasyGet make request and read body stream
-// It returns extended Response that acts as *http.Response
+// EasyHead make head request
+// It accept header values as Options and returns extended Response that acts as *http.Response
 func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
