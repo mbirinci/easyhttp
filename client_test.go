@@ -22,7 +22,7 @@ func TestClient_EasyGet(t *testing.T) {
 
 	client := &Client{&http.Client{}}
 
-	res, err := client.EasyGet(s.URL, &Options{map[string]string{ "foo": "bar"}})
+	res, err := client.EasyGet(s.URL, &Options{Header: map[string]string{ "foo": "bar"}})
 
 	if err != nil {
 		t.Fatalf("err: %v", err)
@@ -108,6 +108,38 @@ func TestResponse_JSON(t *testing.T) {
 
 }
 
+func TestClient_EasyGet_RequestHook(t *testing.T) {
+
+	host := "custom-host"
+
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Host != host {
+			t.Fatalf("custom hook error")
+		}
+
+	}))
+
+	client := &Client{&http.Client{}}
+
+	res, err := client.EasyGet(s.URL, &Options{
+		Hook: func(r *http.Request) {
+			r.Host = host
+		},
+	})
+
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
+	if res == nil {
+		t.Fatalf("response should not nil")
+	}
+
+	defer s.Close()
+
+}
+
 func TestResponse_JSON_Fail(t *testing.T) {
 
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -185,7 +217,7 @@ func TestClient_EasyHead(t *testing.T) {
 
 	client := &Client{&http.Client{}}
 
-	res, err := client.EasyHead(s.URL, &Options{map[string]string{ "foo": "bar"}})
+	res, err := client.EasyHead(s.URL, &Options{Header: map[string]string{ "foo": "bar"}})
 
 	if err != nil {
 		t.Fatalf("err: %v", err)
@@ -224,3 +256,34 @@ func TestClient_EasyHead_Fail(t *testing.T) {
 
 }
 
+func TestClient_EasyHead_RequestHook(t *testing.T) {
+
+	host := "custom-host"
+
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Host != host {
+			t.Fatalf("custom hook error")
+		}
+
+	}))
+
+	client := &Client{&http.Client{}}
+
+	res, err := client.EasyHead(s.URL, &Options{
+		Hook: func(r *http.Request) {
+			r.Host = host
+		},
+	})
+
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
+	if res == nil {
+		t.Fatalf("response should not nil")
+	}
+
+	defer s.Close()
+
+}

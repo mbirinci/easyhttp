@@ -24,6 +24,10 @@ type Response struct {
 type Options struct {
 	// Header contains the request header fields
 	Header map[string]string
+
+	// Hook provides http request to use before request call
+	// It is useful when you need to modify it or registering for any purpose
+	Hook func(r *http.Request)
 }
 
 
@@ -38,6 +42,9 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 	}
 
 	if opts != nil {
+		if opts.Hook != nil {
+			opts.Hook(req)
+		}
 		for k, v := range opts.Header {
 			req.Header.Add(k, v)
 		}
@@ -75,6 +82,9 @@ func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
 	}
 
 	if opts != nil {
+		if opts.Hook != nil {
+			opts.Hook(req)
+		}
 		for k, v := range opts.Header {
 			req.Header.Add(k, v)
 		}
