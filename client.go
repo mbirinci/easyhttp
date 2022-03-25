@@ -27,7 +27,11 @@ type Options struct {
 
   // Hook provides http request to use before request call
   // It is useful when you need to modify it or registering for any purpose
-  RequestHook func(r *http.Request) *http.Request
+  RequestHook func(r *http.Request)
+
+  // Hook provides http request to use before request call
+  // It is useful when you need to modify it or registering for any purpose
+  ResponseHook func(r *http.Response)
 }
 
 // EasyGet make request and read body stream
@@ -42,7 +46,7 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
 
   if opts != nil {
     if opts.RequestHook != nil {
-      req = opts.RequestHook(req)
+      opts.RequestHook(req)
     }
     for k, v := range opts.Header {
       req.Header.Add(k, v)
@@ -50,6 +54,10 @@ func (c *Client) EasyGet(url string, opts *Options) (*Response, error) {
   }
 
   resp, err := c.Do(req)
+
+  if opts != nil && opts.ResponseHook != nil {
+    opts.ResponseHook(resp)
+  }
 
   if err != nil {
     return nil, err
@@ -81,7 +89,7 @@ func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
 
   if opts != nil {
     if opts.RequestHook != nil {
-      req = opts.RequestHook(req)
+      opts.RequestHook(req)
     }
     for k, v := range opts.Header {
       req.Header.Add(k, v)
@@ -89,6 +97,10 @@ func (c *Client) EasyHead(url string, opts *Options) (*http.Response, error) {
   }
 
   resp, err := c.Do(req)
+
+  if opts != nil && opts.ResponseHook != nil {
+    opts.ResponseHook(resp)
+  }
 
   if err != nil {
     return nil, err

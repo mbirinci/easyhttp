@@ -123,9 +123,8 @@ func TestClient_EasyGet_RequestHook(t *testing.T) {
   client := &Client{&http.Client{}}
 
   res, err := client.EasyGet(s.URL, &Options{
-    RequestHook: func(r *http.Request) *http.Request {
+    RequestHook: func(r *http.Request) {
       r.Host = host
-      return r
     },
   })
 
@@ -270,9 +269,8 @@ func TestClient_EasyHead_RequestHook(t *testing.T) {
   client := &Client{&http.Client{}}
 
   res, err := client.EasyHead(s.URL, &Options{
-    RequestHook: func(r *http.Request) *http.Request {
+    RequestHook: func(r *http.Request) {
       r.Host = host
-      return r
     },
   })
 
